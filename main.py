@@ -16,7 +16,7 @@ app.config['MYSQL_DB'] = 'pythonlogin'
 mysql = MySQL(app)
 
 
-@app.route('/pythonlogin/', methods=['GET', 'POST'])
+@app.route('/gdapp/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
     msg = ''
@@ -50,7 +50,7 @@ def login():
 
 
 # http://localhost:5000/python/logout - this will be the logout page
-@app.route('/pythonlogin/logout')
+@app.route('/gdpp/Salir')
 def logout():
     # Remove session data, this will log the user out
    session.pop('loggedin', None)
@@ -64,7 +64,7 @@ def logout():
 
 
 # http://localhost:5000/pythinlogin/register - this will be the registration page, we need to use both GET and POST requests
-@app.route('/pythonlogin/register', methods=['GET', 'POST'])
+@app.route('/gdapp/registro', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
     msg = ''
@@ -102,8 +102,8 @@ def register():
 
 
 
-# http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users
-@app.route('/pythonlogin/home')
+# http://localhost:5000/gdapp/home - this will be the home page, only accessible for loggedin users
+@app.route('/gdapp/home')
 def home():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -111,6 +111,15 @@ def home():
         return render_template('home.html', username = session['username'])
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
+
+
+@app.route('/gdapp/inicio')
+def inicio():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM contacts')
+    data = cur.fetchall()
+    cur.close()
+    return render_template('inicio.html', contacts = data) 
 
 
 
