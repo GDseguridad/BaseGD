@@ -41,7 +41,8 @@ def login():
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
-            return redirect(url_for('home'))
+    # Show the login form with message (if any)
+    return render_template('index.html', msg=msg)
 
 
 
@@ -107,7 +108,7 @@ def home():
     # Check if user is loggedin
     if 'loggedin' in session:
         # User is loggedin show them the home page
-        return render_template('home.html', username=session['username'])
+        return render_template('home.html', username = session['username'])
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
