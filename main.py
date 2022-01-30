@@ -1,4 +1,4 @@
-from flask import Flask, app, render_template, request, redirect, url_for, session
+from flask import Flask, app, render_template, request, redirect, url_for, session, flash
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
@@ -112,15 +112,64 @@ def home():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-
-@app.route('/gdapp/inicio')
-def inicio():
+#Ruta para la toma de asistencias
+@app.route('/gdapp/asistencia')
+def asistencia():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM contacts')
     data = cur.fetchall()
     cur.close()
-    return render_template('inicio.html', contacts = data) 
+    return render_template('asistencia.html', contacts = data) 
 
+
+
+@app.route('/gdapp/asistencia_add', methods =['POST', 'GET'] )
+def asistencia_add():
+
+    if request.method == 'POST':
+        fullname = request.form['fullname']
+        phone = request.form['phone']
+        email = request.form['email']
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO contacts (fullname, phone, email) VALUES (%s, %s, %s)',
+        (fullname, phone, email))
+        mysql.connection.commit()
+        flash('Se agrego con exito')
+        return redirect(url_for('asistencia'))
+
+
+@app.route('/gdapp/eliminar/<id>', methods = ['GET'])
+def eliminar(id):
+          cur = mysql.connection.cursor()
+          cur.execute('DELETE FROM contacts WHERE id = {0}' . format(id)) 
+          mysql.connection.commit()
+          flash('Se removio el contacto')
+          return redirect(url_for('asistencia'))
+
+@app.route('/gdapp/editar/<id>')
+def editar(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM contacts WHERE id = %s', id)
+    data = cur.fetchall()
+    return render_template('editar.html', contact = data[0])
+
+@app.route('/gdapp/actualizar/<id>', methods = ['POST'])
+def actualizar(id):
+    if request.method == 'POST':
+        fullname = request.form['fullname']
+        phone = request.form['phone']
+        email = request.form['email']
+    cur = mysql.connection.cursor()
+    cur.execute("""
+    UPDATE contacts
+    SET fullname = %s,
+        email = %s, 
+        phone = %s
+    WHERE id = %s
+    """, (fullname, email, phone, id))
+    mysql.connection.commit()
+    flash('Contacto actualizado')
+    return redirect(url_for('asistencia'))
 
 
 if __name__ == '__main__':
