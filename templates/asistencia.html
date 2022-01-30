@@ -19,7 +19,7 @@
         {% endwith %}
 
         <div class="card card body">
-            <form action="/add_contact" method="POST">
+            <form action="/gdapp/asistencia_add" method="POST">
                 <div class="form-group">
 
                     <input type="text" class="form-control" name="fullname" placeholder="Número de registro">
@@ -56,13 +56,20 @@
                     <td>{{ contact.2 }}</td>
                     <td>{{ contact.3 }}</td>
                     <td>
-                        <a href="/edit/{{contact.0}}" class="btn btn-secondary">Editar</a>
-                        <a href="/delete/{{contact.0}}" class="btn btn-danger">Eliminar</a>
+                        <a href="/gdapp/editar/{{contact.0}}" class="btn btn-secondary">Editar</a>
+                        <a href="/gdapp/eliminar/{{contact.0}}" class="btn btn-danger">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <script src="static/js/excel.js"></script>
+        
+        <!---- PARA DESCARGA DIRECTAbutton onclick="exportTableToExcel('tblData')">Export Table Data To Excel File</!--button -->
+
+        <button onclick="exportTableToExcel('tblData', 'Usuarios')">Excel</button>
+
+    
     </div>
 </div>
 
