@@ -31,16 +31,17 @@
                 </div>
                 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">
+                    <button type="submit" class="btn btn-primary btn-block" id="btn">
                         Save
                     </button>
+                    <script src="/static/js/block_button.js"></script>
                 </div>
 
             </form>
         </div>
     </div>
     <div class="col-md-7">
-        <table class="table table-striped yable-bordered bg-white table-sm">
+        <table class="table table-striped yable-bordered bg-white table-sm" id="tblData">
             <thead>
                 <tr>
                     <td>Nombre</td>
@@ -63,13 +64,14 @@
                 {% endfor %}
             </tbody>
         </table>
-        <script src="static/js/excel.js"></script>
-        
+        <script src="/static/js/excel.js"></script>
+
+
         <!---- PARA DESCARGA DIRECTAbutton onclick="exportTableToExcel('tblData')">Export Table Data To Excel File</!--button -->
 
         <button onclick="exportTableToExcel('tblData', 'Usuarios')">Excel</button>
 
-    
+
     </div>
 </div>
 

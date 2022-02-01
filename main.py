@@ -9,14 +9,13 @@ app.secret_key = 'mysecretkey'
 #Conexion a la base SQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Admind1lm3'
-app.config['MYSQL_DB'] = 'pythonlogin'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'siogd'
 
 #Initialize MySQL
 mysql = MySQL(app)
 
-
-@app.route('/gdapp/', methods=['GET', 'POST'])
+@app.route('/gdapp', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
     msg = ''
