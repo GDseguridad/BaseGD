@@ -1,0 +1,171 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-5">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+
+        <div class="alert alert-succes alert-dismissible fade show" role="alert">
+            {{message}}
+            <strong>sastisfactoriamente</strong> Revisa el contacto editado
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="card card body">
+            <form action="/gdapp/guardias_add" method="POST">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="status" placeholder="Status">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="employee_number" placeholder="# Empleado">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="name" placeholder="Nombre">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="lastname" placeholder="Apellido Paterno">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="second_lastname" placeholder="Apellido Materno">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="phone" placeholder="Número Telefonico">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="email" placeholder="e-mail">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="business" placeholder="Empresa">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="client" placeholder="Cliente">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="service" placeholder="Servicio">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="turn" placeholder="Turno">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="daily_salary" placeholder="Salario diario">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="biweekly_salary" placeholder="Salario quincenal">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="monthly_salary" placeholder="Salario mensual">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="bank" placeholder="Banco">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="account_number" placeholder="Número de cuenta">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="clabe" placeholder="CLABE">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block" id="btn">
+                        Save
+                    </button>
+                    <script src="/static/js/block_button.js"></script>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <table class="table table-striped yable-bordered bg-white table-sm" id="tblData">
+            <thead>
+                <tr>
+                    <td>Status</td>
+                    <td>Numero de empleado</td>
+                    <td>Nombre</td>
+                    <td>Apellido Paterno</td>
+                    <td>Apellido Materno</td>
+                    <td>Telefono</td>
+                    <td>e-mail</td>
+                    <td>Empresa</td>
+                    <td>Cliente</td>
+                    <td>Servicio</td>
+                    <td>Turno</td>
+                    <td>Salario diario</td>
+                    <td>Salario quincenal</td>
+                    <td>Salario mensual</td>
+                    <td>Banco</td>
+                    <td>Número de cuenta</td>
+                    <td>CLABE</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contact in payrolls %}
+                <tr>
+                    <td>{{ contact.1 }}</td>
+                    <td>{{ contact.2 }}</td>
+                    <td>{{ contact.3 }}</td>
+                    <td>{{ contact.4 }}</td>
+                    <td>{{ contact.5 }}</td>
+                    <td>{{ contact.6 }}</td>
+                    <td>{{ contact.7 }}</td>
+                    <td>{{ contact.8 }}</td>
+                    <td>{{ contact.9 }}</td>
+                    <td>{{ contact.10 }}</td>
+                    <td>{{ contact.11 }}</td>
+                    <td>{{ contact.12 }}</td>
+                    <td>{{ contact.13 }}</td>
+                    <td>{{ contact.14 }}</td>
+                    <td>{{ contact.15 }}</td>
+                    <td>{{ contact.16 }}</td>
+                    <td>{{ contact.17 }}</td>
+                    <td>
+                        <a href="/gdapp/editar_guardias/{{contact.0}}" class="btn btn-secondary">Editar</a>
+                        <a href="/gdapp/eliminar_guardias/{{contact.0}}" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <script src="/static/js/excel.js"></script>
+
+
+        <!---- PARA DESCARGA DIRECTAbutton onclick="exportTableToExcel('tblData')">Export Table Data To Excel File</!--button -->
+
+        <button onclick="exportTableToExcel('tblData', 'Usuarios')">Excel</button>
+
+
+    </div>
+</div>
+
+
+
+
+<link rel="shortcut icon" href="favicon.ico">
+
+
+
+
+{% endblock %}

@@ -9,7 +9,7 @@ app.secret_key = 'mysecretkey'
 #Conexion a la base SQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'Admind1lm3'
 app.config['MYSQL_DB'] = 'siogd'
 
 #Initialize MySQL
@@ -170,6 +170,106 @@ def actualizar(id):
     flash('Contacto actualizado')
     return redirect(url_for('asistencia'))
 
+
+#######################################################################3
+#####################GUARDIAS######################################
+@app.route('/gdapp/guardias')
+def guardias():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM payrolls')
+    data = cur.fetchall()
+    cur.close()
+    return render_template('guardias.html', payrolls = data) 
+
+@app.route('/gdapp/guardias_add', methods =['POST', 'GET'] )
+def guardias_add():
+
+    if request.method == 'POST':
+        status = request.form['status']
+        employee_number = request.form['employee_number']
+        name = request.form['name']
+        lastname = request.form['lastname']
+        second_lastname = request.form['second_lastname']
+        phone = request.form['phone']
+        email = request.form['email']
+        business = request.form['business']
+        client = request.form['client']
+        service = request.form['service']
+        turn = request.form['turn']
+        daily_salary = request.form['daily_salary']
+        biweekly_salary = request.form['biweekly_salary']
+        monthly_salary = request.form['monthly_salary']
+        bank = request.form['bank']
+        account_number = request.form['account_number']
+        clabe = request.form['clabe']
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO payrolls (status, employee_number, name, lastname, second_lastname, phone, email, business, client, service, turn, daily_salary, biweekly_salary, monthly_salary, bank, account_number, clabe) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+        (status, employee_number, name, lastname, second_lastname, phone, email, business, client, service, turn, daily_salary, biweekly_salary, monthly_salary, bank, account_number, clabe))
+        mysql.connection.commit()
+        flash('Se agrego con exito')
+        return redirect(url_for('guardias'))
+
+
+@app.route('/gdapp/eliminar_guardias/<id>', methods = ['GET'])
+def eliminar_guardias(id):
+          cur = mysql.connection.cursor()
+          cur.execute('DELETE FROM payrolls WHERE id = {0}' . format(id)) 
+          mysql.connection.commit()
+          flash('Se removio el guardia')
+          return redirect(url_for('guardias'))
+
+@app.route('/gdapp/editar_guardias/<id>')
+def editar_guardias(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM payrolls WHERE id = %s', id)
+    data = cur.fetchall()
+    return render_template('editar_guardias.html', payrolls = data[0])
+
+@app.route('/gdapp/actualizar_guardias/<id>', methods = ['POST'])
+def actualizar_guardias(id):
+    if request.method == 'POST':
+        status = request.form['status']
+        employee_number = request.form['employee_number']
+        name = request.form['name']
+        lastname = request.form['lastname']
+        second_lastname = request.form['second_lastname']
+        phone = request.form['phone']
+        email = request.form['email']
+        business = request.form['business']
+        client = request.form['client']
+        service = request.form['service']
+        turn = request.form['turn']
+        daily_salary = request.form['daily_salary']
+        biweekly_salary = request.form['biweekly_salary']
+        monthly_salary = request.form['monthly_salary']
+        bank = request.form['bank']
+        account_number = request.form['account_number']
+        clabe = request.form['clabe']
+    cur = mysql.connection.cursor()
+    cur.execute("""
+    UPDATE payrolls
+    SET status = %s,
+        employee_number = %s, 
+        name = %s
+        lastname = %s,
+        second_lastname = %s, 
+        phone = %s
+        email = %s,
+        business = %s, 
+        client = %s
+        service = %s,
+        turn = %s, 
+        daily_salary = %s
+        biweekly_salary = %s,
+        monthly_salary = %s, 
+        bank = %s
+        account_number = %s,
+        clabe = %s
+    WHERE id = %s
+    """, (status, employee_number, name, lastname, second_lastname, phone, email, business, client, service, turn, daily_salary, biweekly_salary, monthly_salary, bank, account_number, clabe, id))
+    mysql.connection.commit()
+    flash('Guardia actualizado')
+    return redirect(url_for('guardias'))
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
